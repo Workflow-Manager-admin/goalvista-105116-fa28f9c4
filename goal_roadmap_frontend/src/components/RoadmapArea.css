@@ -1,0 +1,62 @@
+.roadmap-area {
+  flex: 1 1 auto;
+  padding: 36px 30px 24px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.roadmap-area > h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--primary, #1e90ff);
+}
+
+.roadmap-area__desc {
+  margin-bottom: 32px;
+  color: #8899aa;
+  font-size: 1.08rem;
+}
+
+.goal-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 28px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.goal-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 3px 16px rgba(0,0,0,0.07), 0 2px 5px rgba(0,0,0,0.07);
+  padding: 22px 20px;
+  text-align: left;
+  cursor: pointer;
+  transition: box-shadow 0.14s, transform 0.13s;
+  border-left: 5px solid var(--accent, #00b894);
+}
+
+.goal-card:hover {
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.12);
+  transform: translateY(-2px) scale(1.03);
+}
+
+.goal-card__status {
+  display: inline-block;
+  margin-top: 7px;
+  font-size: 0.97rem;
+  font-weight: 500;
+  border-radius: 6px;
+  padding: 2px 8px;
+}
+.goal-card__status.in-progress { background: var(--primary, #1e90ff); color: #fff; }
+.goal-card__status.planned { background: var(--secondary, #ff9f43); color: #fff; }
+
+@media (max-width: 900px) {
+  .roadmap-area { padding: 19px 8px 10px 8px; }
+}
+@media (max-width: 700px) {
+  .goal-cards { grid-template-columns: 1fr; }
+}
