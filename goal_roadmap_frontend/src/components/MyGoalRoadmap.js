@@ -1,24 +1,44 @@
 import React, { useState } from "react";
 import "./MyGoalRoadmap.css";
+import GoalModal from "./GoalModal";
 
 /**
  * PUBLIC_INTERFACE
  * MyGoalRoadmap - Visual path showing interactive milestones.
- * Each milestone displays an icon and title, and can be clicked for future expansion (now shows a tooltip).
- * Maintains minimalist, accent-colored, and responsive design with soft shadows and rounded corners.
+ * Each milestone is clickable; clicking opens a modal popup with milestone details (description, date, status).
+ * Minimalist, accent-colored, and responsive design with soft shadows and rounded corners.
  */
-// Default sample milestones (icon + title) if not provided via props
-const DEFAULT_MILESTONES = [
-  { icon: "🎯", title: "Learn JavaScript", status: "completed" },
-  { icon: "💻", title: "Build My First Project", status: "in_progress" },
-  { icon: "🛠️", title: "Get Internship", status: "planned" }
+// Demo milestones, each has icon, title, description, date, and status
+const DEMO_MILESTONES = [
+  {
+    icon: "🎯",
+    title: "Learn JavaScript",
+    description: "Complete an interactive JavaScript course and build at least 3 small demo projects.",
+    date: "2024-03-20",
+    status: "completed"
+  },
+  {
+    icon: "💻",
+    title: "Build My First Project",
+    description: "Develop a personal website using React and deploy it online.",
+    date: "2024-04-20",
+    status: "in_progress"
+  },
+  {
+    icon: "🛠️",
+    title: "Get Internship",
+    description: "Apply to 5+ relevant internships and prepare a standout resume and portfolio.",
+    date: "2024-06-10",
+    status: "planned"
+  }
 ];
 
 function MyGoalRoadmap({
-  milestones = DEFAULT_MILESTONES
+  milestones = DEMO_MILESTONES
 }) {
-  // Which milestone (by index) is "tooltip"-open (for now only one at a time)
-  const [openIdx, setOpenIdx] = useState(null);
+  // Modal open/close, and which milestone (index) is selected
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedMilestoneIdx, setSelectedMilestoneIdx] = useState(null);
 
   // Calculate completion percent (completed + 0.5*in_progress)
   const completed = milestones.filter(m => m.status === "completed").length;
@@ -29,8 +49,14 @@ function MyGoalRoadmap({
 
   // PUBLIC_INTERFACE
   const handleMilestoneClick = idx => {
-    // Toggle tooltip/modal for milestone; in future, expandable
-    setOpenIdx(openIdx === idx ? null : idx);
+    setSelectedMilestoneIdx(idx);
+    setModalOpen(true);
+  };
+
+  // PUBLIC_INTERFACE
+  const handleModalClose = () => {
+    setModalOpen(false);
+    setSelectedMilestoneIdx(null);
   };
 
   return (
@@ -81,48 +107,6 @@ function MyGoalRoadmap({
                   <span className="my-goal-roadmap__step-label">
                     {milestone.title}
                   </span>
-                  {/* Minimal tooltip for interactable milestones */}
-                  {openIdx === idx &&
-                    <div
-                      className="my-goal-roadmap__milestone-tooltip"
-                      tabIndex={-1}
-                      style={{
-                        position: "absolute",
-                        top: 36,
-                        zIndex: 99,
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        minWidth: 120,
-                        background: "var(--bg-primary, #fff)",
-                        color: "var(--text-primary, #282c34)",
-                        boxShadow: "0 6px 22px 0 rgba(0,184,148,0.10)",
-                        borderRadius: 10,
-                        padding: "12px 17px",
-                        fontSize: "1rem",
-                        fontWeight: 500,
-                        whiteSpace: "nowrap",
-                        border: "1px solid var(--border-color, #e9ecef)"
-                      }}
-                      onClick={e => e.stopPropagation()}
-                    >
-                      <span role="img" aria-label="icon" style={{ fontSize: "1.15em" }}>
-                        {milestone.icon}
-                      </span>{" "}
-                      {milestone.title}
-                      <span
-                        style={{
-                          position: "absolute",
-                          right: 7,
-                          top: 4,
-                          cursor: "pointer",
-                          color: "var(--primary, #1e90ff)"
-                        }}
-                        onClick={() => setOpenIdx(null)}
-                        tabIndex={0}
-                        aria-label="close tooltip"
-                      >×</span>
-                    </div>
-                  }
                 </div>
               );
             })}
@@ -132,6 +116,11 @@ function MyGoalRoadmap({
           {percent}% Complete
         </div>
       </div>
+      <GoalModal
+        open={modalOpen}
+        milestone={selectedMilestoneIdx !== null ? milestones[selectedMilestoneIdx] : null}
+        onClose={handleModalClose}
+      />
     </section>
   );
 }
