@@ -1,14 +1,16 @@
 import React from "react";
 import "./RoadmapArea.css";
+import MyGoalRoadmap from "./MyGoalRoadmap";
 
 // PUBLIC_INTERFACE
 function RoadmapArea({ onGoalClick }) {
   /**
    * Main content area for roadmap or goals visualization.
-   * Placeholder content for now.
+   * Includes a visually prominent "My Goal Roadmap" with progress bar/path.
    */
   return (
     <main className="roadmap-area">
+      <MyGoalRoadmap />
       <h1>Roadmap Visualizer</h1>
       <p className="roadmap-area__desc">Your goals and milestones will appear here.</p>
       {/* Example goal cards (clickable to open modal) */}
